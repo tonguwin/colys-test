@@ -16,14 +16,27 @@ const engine = new BABYLON.Engine(canvas, true);
 // This creates a basic Babylon Scene object (non-mesh)
 var scene = new BABYLON.Scene(engine);
 
-// This creates and positions a free camera (non-mesh)
-var camera = new BABYLON.FollowCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
 
-// This targets the camera to scene origin
-camera.setTarget(BABYLON.Vector3.Zero());
-
-// This attaches the camera to the canvas
+// Need a free camera for collisions
+var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 2, -20), scene);
+camera.minZ = .01;
 camera.attachControl(canvas, true);
+camera.speed = .25;
+
+
+//Simple crate
+var box = BABYLON.MeshBuilder.CreateBox("crate", {
+    width: 20,
+    height: 7,
+    depth: 20,
+    sideOrientation: 1
+}, scene);
+
+let box_material = new BABYLON.StandardMaterial("Mat", scene);
+    box_material.diffuseTexture = new BABYLON.Texture("textures/nice_flooring.jpg", scene);
+    box_material.specularColor = BABYLON.Color3.Black();
+   
+box.material = box_material;
 
 // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
 var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
